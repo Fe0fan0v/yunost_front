@@ -1,18 +1,23 @@
 <template>
-  <div>
-    <div id="App">
-      <Header/>
-    </div>
+  <y-header/>
+  <div id="app">
+    <router-view/>
   </div>
 </template>
 
 <script>
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
 
-import Header from '@/components/header-view'
+// Подключение иконок
+UIkit.use(Icons);
+// компоненты могут быть вызваны из импортированной ссылки UIkit
+
+import YHeader from "@/components/Header";
 export default {
   name: 'App',
   components: {
-    Header
+    YHeader,
   }
 }
 </script>
