@@ -90,7 +90,7 @@ export default {
       this.$forceUpdate()
     },
     async postData() {
-      if (Array.from(this.records).length < Object.keys(this.reg_data['courses']).length) {
+      if (Object.keys(this.records).length < Object.keys(this.reg_data['courses']).length) {
         alert('Не все поля заполнены!')
         return
       }
