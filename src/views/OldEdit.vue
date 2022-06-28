@@ -22,7 +22,7 @@
         @done="getData"
     />
     <div class="uk-margin">
-      <button class="uk-button uk-button-default uk-width-1-1@xl" @click="postData">Применить</button>
+      <button class="uk-button uk-button-default uk-width-1-1" @click="postData">Применить</button>
     </div>
   </form>
 </template>
@@ -44,7 +44,7 @@ export default {
       isLoaded: false,
       reg_data: {},
       courses: [],
-      records: {}
+      records: {},
     }
   },
   methods: {
@@ -84,6 +84,10 @@ export default {
       this.$forceUpdate()
     },
     async postData() {
+      if (Array.from(this.records).length < Object.keys(this.reg_data['courses']).length) {
+        alert('Не все поля заполнены!')
+        return
+      }
       let data = {
         reg_id: this.current_id,
         records: Object.values(this.records)
@@ -98,7 +102,6 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-
     }
   },
   mounted() {
