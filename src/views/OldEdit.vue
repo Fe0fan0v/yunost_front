@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <button @click="loadReg(prev_id)">Предыдущий</button>
-    <button @click="loadReg(next_id)">Следующий</button>
+    <button @click="loadReg(prev_id)" :disabled="!Boolean(prev_id)">Предыдущий</button>
+    <button @click="loadReg(next_id)" :disabled="!Boolean(next_id)">Следующий</button>
     <form v-if="isLoaded" @submit.prevent>
       <p>
         <label>Id записи</label>
