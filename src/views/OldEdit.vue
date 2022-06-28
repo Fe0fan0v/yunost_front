@@ -55,12 +55,18 @@ export default {
             reg_id: reg_id,
           }
         });
+        if (response.data['nodata']) {
+          return
+        }
         this.prev_id = response.data['prev'] ? response.data['prev']['id'] : null;
         this.current_id = response.data['current']['id']
         this.next_id = response.data['next'] ? response.data['next']['id'] : null;
         this.reg_data = response.data['current'];
       } else {
         const response = await axios.get('http://localhost:5000/reg');
+        if (response.data['nodata']) {
+          return
+        }
         this.prev_id = null;
         this.current_id = response.data['current']['id'];
         this.next_id = response.data['next'] ? response.data['next']['id'] : null;
