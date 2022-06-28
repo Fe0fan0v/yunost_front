@@ -1,6 +1,6 @@
 <template>
   <y-header/>
-  <div id="app">
+  <div id="app" class="uk-container">
     <router-view/>
   </div>
 </template>

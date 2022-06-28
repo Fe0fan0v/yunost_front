@@ -1,23 +1,30 @@
 <template>
-  <div class="home">
-    <button @click="loadReg(prev_id)" :disabled="!Boolean(prev_id)">Предыдущий</button>
-    <button @click="loadReg(next_id)" :disabled="!Boolean(next_id)">Следующий</button>
-    <form v-if="isLoaded" @submit.prevent>
-      <p>
-        <label>Id записи</label>
-        <input v-model="current_id" @change="loadReg(current_id)" type="text">
-      </p>
-      <OldEditForm
-          v-for="pair in Object.entries(reg_data['courses'])"
-          :oldname="pair[0]"
-          :oldgroup="pair[1]"
-          :courses="courses"
-          :key="pair[0]"
-          @done="getData"
-      />
-      <button @click="postData">Применить</button>
-    </form>
+  <div class="uk-margin">
+    <button class="uk-button uk-button-default uk-width-1-2" @click="loadReg(prev_id)" :disabled="!Boolean(prev_id)">
+      Предыдущий
+    </button>
+    <button class="uk-button uk-button-default uk-width-1-2" @click="loadReg(next_id)" :disabled="!Boolean(next_id)">
+      Следующий
+    </button>
   </div>
+  <form class="uk-form-stacked" v-if="isLoaded" @submit.prevent>
+    <div class="uk-margin">
+
+      <label class="uk-form-label">Id записи</label>
+      <input class="uk-input" v-model="current_id" @change="loadReg(current_id)" type="text">
+    </div>
+    <OldEditForm
+        v-for="pair in Object.entries(reg_data['courses'])"
+        :oldname="pair[0]"
+        :oldgroup="pair[1]"
+        :courses="courses"
+        :key="pair[0]"
+        @done="getData"
+    />
+    <div class="uk-margin">
+      <button class="uk-button uk-button-default uk-width-1-1@xl" @click="postData">Применить</button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -82,6 +89,16 @@ export default {
         records: Object.values(this.records)
       }
       await axios.post('http://localhost:5000/update', data)
+          .then(function (response) {
+            if (response.data['status'] == 'ok') {
+              console.log('ok')
+              location.href = '/old'
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
     }
   },
   mounted() {
