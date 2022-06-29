@@ -3,7 +3,7 @@ import OldEdit from "@/views/OldEdit";
 
 const routes = [
   {
-    path: '/old',
+    path: '/convert',
     name: 'old',
     component: OldEdit
   },
