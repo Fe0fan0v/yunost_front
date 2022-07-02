@@ -13,6 +13,7 @@
     "uikit": "^3.14.1",
     "vue": "^3.2.13",
     "vue-router": "^4.0.16",
+    "vue3-select2-component": "^0.1.7",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

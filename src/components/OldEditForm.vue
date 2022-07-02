@@ -4,11 +4,9 @@
       <h4 class="uk-card-title">{{ oldname }} - группа {{ oldgroup }}</h4>
       <div>
         <label class="uk-form-label">Новое название</label>
-        <select class="uk-select" v-model="newname" @change="updateGroups">
-          <option v-for="course in courses" v-bind:value="course['id']" v-bind:key="course['id']">
-            {{ course['name'] }} ({{ course['teachers'].join(', ') }})
-          </option>
-        </select>
+        <Select2 v-model="newname" :options="coursesForSelect"
+                 :settings="{ width: '100%' }"
+                 @select="updateGroups($event)"/>
         <label class="uk-form-label">Новый номер группы</label>
         <select class="uk-select" v-model="newgroup">
           <option v-for="group in groups" v-bind:value="group" v-bind:key="group">
@@ -24,8 +22,11 @@
 </template>
 
 <script>
+import Select2 from 'vue3-select2-component';
+
 export default {
   name: 'OldEditForm',
+  components: {Select2},
   props: {
     oldname: {
       type: String,
@@ -35,22 +36,25 @@ export default {
       type: String,
       required: true
     },
-    courses: {
+    coursesForSelect: {
       type: Array,
       required: true
     },
+    groupLists: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
       groups: [],
       newname: '',
-      newgroup: '',
+      newgroup: ''
     }
   },
   methods: {
-    updateGroups() {
-      this.groups = this.courses.find(item => item.id == this.newname)['groups']
-      // this.$emit('course_id', event.target.value)
+    updateGroups(e) {
+      this.groups = this.groupLists[e.id]
     },
     submitData() {
       if (this.newname && this.newgroup) {

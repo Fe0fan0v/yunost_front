@@ -17,7 +17,8 @@
         v-for="pair in Object.entries(reg_data['courses'])"
         :oldname="pair[0]"
         :oldgroup="pair[1]"
-        :courses="courses"
+        :courses-for-select="coursesForSelect"
+        :group-lists="groupLists"
         :key="pair[0]"
         @done="getData"
     />
@@ -43,14 +44,15 @@ export default {
       next_id: null,
       isLoaded: false,
       reg_data: {},
-      courses: [],
       records: {},
+      coursesForSelect: [],
+      groupLists: {}
     }
   },
   methods: {
     async loadReg(reg_id) {
       if (reg_id) {
-        const response = await axios.get('http://localhost:5000/reg', {
+        const response = await axios.get('https://priem.ddt-miass.ru/reg', {
           params: {
             reg_id: reg_id,
           }
@@ -63,7 +65,7 @@ export default {
         this.next_id = response.data['next'] ? response.data['next']['id'] : null;
         this.reg_data = response.data['current'];
       } else {
-        const response = await axios.get('http://localhost:5000/reg');
+        const response = await axios.get('https://priem.ddt-miass.ru/reg');
         if (response.data['nodata']) {
           return
         }
@@ -76,14 +78,13 @@ export default {
       this.records = {}
     },
     async loadCourses() {
-      const response = await axios.get('http://localhost:5000/courses');
-      this.courses = Array.from(response.data, (obj) => (
+      const response = await axios.get('https://priem.ddt-miass.ru/courses');
+      this.coursesForSelect = Array.from(response.data, (obj) => (
           {
             id: obj['id'],
-            name: obj['name'],
-            teachers: obj['teachers'],
-            groups: Object.keys(obj['schedule'])
+            text: obj['name'] + ' ' + obj['teachers'].join(', ')
           }))
+      this.groupLists = Object.fromEntries(response.data.map((obj) => [obj['id'], Object.keys(obj['schedule'])]))
     },
     getData(data) {
       this.records[data[0]] = [data[1], data[2]]
@@ -98,11 +99,11 @@ export default {
         reg_id: this.current_id,
         records: Object.values(this.records)
       }
-      await axios.post('http://localhost:5000/update', data)
+      await axios.post('https://priem.ddt-miass.ru/update', data)
           .then(function (response) {
             if (response.data['status'] == 'ok') {
               console.log('ok')
-              location.href = '/old'
+              location.href = '/convert'
             }
           })
           .catch(function (error) {

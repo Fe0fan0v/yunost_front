@@ -4,9 +4,9 @@ import OldEdit from "@/views/OldEdit";
 const routes = [
   {
     path: '/convert',
-    name: 'old',
+    name: 'convert',
     component: OldEdit
-  },
+  }
 ]
 
 const router = createRouter({
